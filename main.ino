@@ -17,24 +17,33 @@ public:
     pinMode(d, OUTPUT);  
   }
   
-  void eightStep() {
+  void eightStep(bool reverse) {
     digitalWrite(a, stepping[stepIndex][0]);      
     digitalWrite(b, stepping[stepIndex][1]);
     digitalWrite(c, stepping[stepIndex][2]);
     digitalWrite(d, stepping[stepIndex][3]);
-    stepIndex = (stepIndex + 1) % 8;
+    stepIndex = reverse ? (stepIndex == 0 ? 7 : stepIndex - 1) : (stepIndex + 1) % 8;
   }
 
-  void fullStep(int d) {
+  void fullStep(int d, bool reverse) {
     for (int i = 0; i < 8; i++) {
-      eightStep();
+      eightStep(reverse);
       delay(d);
     }
   }
 
   void rotate(int deg) {
+    bool reverse = false;
+    if (deg > 180) {
+      reverse = true;
+      deg = 360 - deg;
+    }
+    if (deg < 0) {
+      reverse = !reverse;
+      deg = -deg;
+    }
     int steps = int(deg * 512.0 / 360.0);
-    for (int i = 0; i < steps; i++) fullStep(1);
+    for (int i = 0; i < steps; i++) fullStep(1, reverse);
   }
   
 };
