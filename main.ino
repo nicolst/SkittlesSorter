@@ -74,15 +74,8 @@ void loop() {
     
     Motor* m = command > 0 ? &mot1 : &mot2;
     command = abs(command);
-    bool degrees = !((command & 0x8000) >> 15);
-
-    int value = command & 0x0FFF;
-    
-    if (degrees) {
-      m->rotate(value);
-    } else {
-      for (int i = 0; i < value; i++) m->fullStep(1);
-    }
+   
+    m->rotate(command);
     
   }  
 }
