@@ -22,7 +22,7 @@ public:
     digitalWrite(b, stepping[stepIndex][1]);
     digitalWrite(c, stepping[stepIndex][2]);
     digitalWrite(d, stepping[stepIndex][3]);
-    stepIndex = reverse ? (stepIndex == 0 ? 7 : stepIndex - 1) : (stepIndex + 1) % 8;
+    stepIndex = !reverse ? (stepIndex == 0 ? 7 : stepIndex - 1) : (stepIndex + 1) % 8;
   }
 
   void fullStep(int d, bool reverse) {
@@ -76,6 +76,6 @@ void loop() {
     command = abs(command);
    
     m->rotate(command);
-    
+    Serial.print("OK"); 
   }  
 }
